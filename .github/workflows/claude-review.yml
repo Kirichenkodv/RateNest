@@ -10,7 +10,10 @@ concurrency:
 
 jobs:
   review:
-    if: github.event.pull_request.draft == false
+    # Секреты недоступны в PR из форков — ревью только для веток этого репозитория
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -44,7 +47,12 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           SHA: ${{ github.event.pull_request.head.sha }}
         run: |
+          # Учитываем только вердикты: inline-комментарии создают ревью со state COMMENTED
           state=$(gh api "repos/${{ github.repository }}/pulls/$PR/reviews" \
-            --jq "[.[] | select(.user.login == \"github-actions[bot]\" and .commit_id == \"$SHA\")] | last | .state // \"NONE\"")
-          echo "Review verdict for $SHA: $state"
-          [ "$state" = "APPROVED" ]
+            --jq "[.[] | select(.user.login == \"github-actions[bot]\" and .commit_id == \"$SHA\"
+                   and (.state == \"APPROVED\" or .state == \"CHANGES_REQUESTED\"))] | last | .state // \"NONE\"")
+          case "$state" in
+            APPROVED) echo "Ревью одобрено для $SHA" ;;
+            CHANGES_REQUESTED) echo "::error::Ревьюер запросил изменения — смотри комментарии в PR"; exit 1 ;;
+            *) echo "::error::Вердикт ревью не опубликован для $SHA — смотри лог шага Claude"; exit 1 ;;
+          esac
