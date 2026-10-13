@@ -1,7 +1,9 @@
 from pathlib import Path
 from typing import Annotated
+
 import dj_database_url
-from pydantic import Field, field_validator
+from django.core.exceptions import ImproperlyConfigured
+from pydantic import Field, ValidationError, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +28,13 @@ class Settings(BaseSettings):
         return value
 
 
-env = Settings()
+try:
+    env = Settings()
+except ValidationError as exc:
+    raise ImproperlyConfigured(
+        "Некорректные настройки Django. Проверьте, что обязательные "
+        "переменные окружения, включая DJANGO_SECRET_KEY, заданы правильно."
+    ) from exc
 
 SECRET_KEY = env.DJANGO_SECRET_KEY
 DEBUG = env.DJANGO_DEBUG
