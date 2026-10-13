@@ -29,5 +29,12 @@ DJANGO_ALLOWED_HOSTS = "localhost,127.0.0.1"
 DATABASE_URL = "postgres://user:pass@localhost:5432/test_db"
 REDIS_URL = "redis://localhost:6379/0"
 
+[tool.ruff.lint]
+select = ["E", "F"]
+ignore = ["F401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["E501"]
+
 
 
