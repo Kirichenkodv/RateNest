@@ -12,6 +12,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "mypy>=2.4.0",
     "pytest>=9.1.1",
     "pytest-django>=4.14.0",
     "pytest-env>=1.8.0",
@@ -30,11 +31,16 @@ DATABASE_URL = "postgres://user:pass@localhost:5432/test_db"
 REDIS_URL = "redis://localhost:6379/0"
 
 [tool.ruff.lint]
-select = ["E", "F"]
-ignore = ["F401"]
+select = ["E", "F", "I"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["E501"]
 
+[tool.mypy]
+python_version = "3.13" 
+ignore_missing_imports = true
+plugins = ["pydantic.mypy"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["config"]
 
