@@ -47,10 +47,12 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          # Учитываем только вердикты: inline-комментарии создают ревью со state COMMENTED
-          state=$(gh api "repos/${{ github.repository }}/pulls/$PR/reviews" \
-            --jq "[.[] | select(.user.login == \"github-actions[bot]\" and .commit_id == \"$SHA\"
-                   and (.state == \"APPROVED\" or .state == \"CHANGES_REQUESTED\"))] | last | .state // \"NONE\"")
+          # Учитываем только вердикты: inline-комментарии создают ревью со state COMMENTED.
+          # --paginate: ревью отдаются страницами по 30, в длинном PR свежий вердикт — не на первой.
+          state=$(gh api --paginate "repos/${{ github.repository }}/pulls/$PR/reviews?per_page=100" \
+            --jq ".[] | select(.user.login == \"github-actions[bot]\" and .commit_id == \"$SHA\"
+                  and (.state == \"APPROVED\" or .state == \"CHANGES_REQUESTED\")) | .state" | tail -n 1)
+          state=${state:-NONE}
           case "$state" in
             APPROVED) echo "Ревью одобрено для $SHA" ;;
             CHANGES_REQUESTED) echo "::error::Ревьюер запросил изменения — смотри комментарии в PR"; exit 1 ;;
