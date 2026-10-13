@@ -32,7 +32,6 @@ SECRET_KEY = env.DJANGO_SECRET_KEY
 DEBUG = env.DJANGO_DEBUG
 ALLOWED_HOSTS = env.DJANGO_ALLOWED_HOSTS
 
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
