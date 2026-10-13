@@ -96,7 +96,9 @@ def test_database_from_url() -> None:
 
 
 def test_redis_url_from_env() -> None:
-    assert load_settings(BASE_ENV, "REDIS_URL") == {"REDIS_URL": "redis://redis-host:6379/1"}
+    assert load_settings(BASE_ENV, "REDIS_URL") == {
+        "REDIS_URL": "redis://redis-host:6379/1"
+    }
 
 
 def test_locale() -> None:
