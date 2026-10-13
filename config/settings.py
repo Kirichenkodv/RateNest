@@ -91,8 +91,16 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+try:
+    default_database = dj_database_url.parse(env.DATABASE_URL)
+except ValueError:
+    raise ImproperlyConfigured(
+        "Некорректная переменная DATABASE_URL. "
+        "Проверьте формат URL, схему и кодирование специальных символов."
+    ) from None
+
 DATABASES = {
-    "default": dj_database_url.parse(env.DATABASE_URL),
+    "default": default_database,
 }
 
 REDIS_URL = env.REDIS_URL
