@@ -31,10 +31,18 @@ class Settings(BaseSettings):
 try:
     env = Settings()
 except ValidationError as exc:
+    fields = sorted(
+        {
+            ".".join(str(part) for part in error["loc"])
+            for error in exc.errors(include_input=False)
+            if error.get("loc")
+        }
+    )
+    field_names = ", ".join(fields) or "неизвестные настройки"
+
     raise ImproperlyConfigured(
-        "Некорректные настройки Django. Проверьте, что обязательные "
-        "переменные окружения, включая DJANGO_SECRET_KEY, заданы правильно."
-    ) from exc
+        f"Некорректные настройки Django. Проверьте переменные: {field_names}."
+    ) from None
 
 SECRET_KEY = env.DJANGO_SECRET_KEY
 DEBUG = env.DJANGO_DEBUG
@@ -116,13 +124,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "ru"
 
-
 TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
