@@ -31,7 +31,7 @@ uv run python manage.py runserver
 ```
 ### Запуск тестов
 ```
-uv run python pytest .
+uv run --env-file .env pytest tests/test_settings.py
 ```
 
 
