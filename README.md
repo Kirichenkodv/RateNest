@@ -23,11 +23,11 @@ uv sync
 ```
 cp .env.example .env
 ```
-переменные из .env звполнить своими данными
+переменные из .env заполнить своими данными
 
 ### Запуск приложения
 ```
-uv run python manage.py runserver
+uv run --env-file .env python manage.py runserver
 ```
 ### Запуск тестов
 ```
