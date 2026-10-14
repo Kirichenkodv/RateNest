@@ -6,7 +6,6 @@ on:
     branches:
       - main
 
-# Один активный прогон на PR: новый push отменит предыдущий.
 # Новый push отменяет предыдущий незавершённый прогон только для того же PR.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
