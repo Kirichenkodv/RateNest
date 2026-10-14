@@ -33,13 +33,11 @@ DATABASE_URL = "postgres://user:pass@localhost:5432/test_db"
 REDIS_URL = "redis://localhost:6379/0"
 
 [tool.ruff.lint]
-select = ["E", "F", "I"]
+select = ["E", "F", "I", "B"]
+ignore = ["B008"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["E501"]
-ignore = [
-    "B008", # Do not perform function calls in argument defaults
-]
 
 [tool.ruff.lint.isort]
 known-first-party = ["config"]

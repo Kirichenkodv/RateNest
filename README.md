@@ -38,7 +38,7 @@ uv run pytest
 
 ```
 uv run ruff check .
-uv run ruf format --check .
+uv run ruff format --check .
 uv run mypy .
 ```
 
