@@ -34,4 +34,15 @@ uv run --env-file .env python manage.py runserver
 uv run pytest
 ```
 
+### Линтер, форматер и проверка типов
 
+```
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy .
+```
+
+### Инициализация хуков pre-commit
+```
+uv run pre-commit install
+```

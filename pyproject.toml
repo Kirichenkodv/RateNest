@@ -15,6 +15,7 @@ dependencies = [
 dev = [
     "django-stubs[compatible-mypy]>=6.1.2",
     "mypy>=2.4.0",
+    "pre-commit>=4.7.0",
     "pytest>=9.1.1",
     "pytest-django>=4.14.0",
     "pytest-env>=1.8.0",
@@ -32,17 +33,29 @@ DATABASE_URL = "postgres://user:pass@localhost:5432/test_db"
 REDIS_URL = "redis://localhost:6379/0"
 
 [tool.ruff.lint]
-select = ["E", "F", "I"]
+select = ["E", "F", "I", "B", "UP", "DJ", "S"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["E501"]
+"tests/**/*.py" = [
+    # Разрешаем assert в тестах для проверки результатов.
+    "S101",
+
+    # Разрешаем длинные строки в тестах, чтобы не ухудшать читаемость ожидаемых значений.
+    "E501",
+
+    # Разрешаем потенциально похожие на пароли строки в тестовых данных.
+    "S105",
+]
 
 [tool.ruff.lint.isort]
 known-first-party = ["config"]
 
 [tool.mypy]
 python_version = "3.13"
+strict = true # строгий режим проверок mypy
 plugins = ["mypy_django_plugin.main", "pydantic.mypy"]
+mypy_path = "."
+explicit_package_bases = true # помогают mypy находить модули внутри проекта
 
 [tool.django-stubs]
 django_settings_module = "config.settings"
