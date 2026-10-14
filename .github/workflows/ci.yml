@@ -37,6 +37,11 @@ jobs:
   typecheck:
     name: typecheck
     runs-on: ubuntu-latest
+    env:
+      DJANGO_SECRET_KEY: test-only-secret-key
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1
+      DATABASE_URL: postgres://user:pass@localhost:5432/test_db
+      REDIS_URL: redis://localhost:6379/0
     steps:
       - uses: actions/checkout@v4
 
