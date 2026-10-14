@@ -44,7 +44,7 @@ uv run mypy .
 
 ### Инициализация хуков pre-commit
 ```
-uv run pre-commit install 
+uv run pre-commit install
 ```
 
 
