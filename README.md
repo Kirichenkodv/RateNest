@@ -46,7 +46,3 @@ uv run mypy .
 ```
 uv run pre-commit install
 ```
-
-
-
-

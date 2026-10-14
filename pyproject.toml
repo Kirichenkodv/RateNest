@@ -33,10 +33,11 @@ DATABASE_URL = "postgres://user:pass@localhost:5432/test_db"
 REDIS_URL = "redis://localhost:6379/0"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "B"]
+select = ["E", "F", "I", "B", "UP", "DJ", "S"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["E501"]
+# Разрешаем assert в тестах: там он используется для проверок результатов.
+"tests/**/*.py" = ["S101", "E501", "S105"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["config"]
