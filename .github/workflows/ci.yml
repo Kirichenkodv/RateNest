@@ -7,10 +7,11 @@ on:
       - main
 
 # Один активный прогон на PR: новый push отменит предыдущий.
-# Для push в main группа будет привязана к ref ветки.
+# Новый push отменяет предыдущий незавершённый прогон только для того же PR.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 
 permissions:
   contents: read
