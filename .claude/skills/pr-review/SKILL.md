@@ -86,7 +86,9 @@ description: Ревью pull request в RateNest как старший разр�
 
 ## Повторное ревью
 
-Если в PR уже есть твои треды (автор первого комментария — `github-actions`), не начинай с нуля. Получи треды:
+Если в PR уже есть твои треды, не начинай с нуля. Ты — бот GitHub Actions: в GraphQL его логин
+`github-actions`, а в REST API — `github-actions[bot]` (так его ищет шаг `Check verdict` в workflow).
+Это один и тот же бот. Получи треды:
 
 ```bash
 gh api graphql -f query='query($o:String!,$r:String!,$n:Int!){repository(owner:$o,name:$r){pullRequest(number:$n){reviewThreads(first:100){nodes{id isResolved isOutdated path line comments(first:20){nodes{databaseId author{login} body}}}}}}}' -f o=<owner> -f r=<repo> -F n=<N>
