@@ -121,7 +121,3 @@ def test_django_check_passes() -> None:
     )
     assert result.returncode == 0, result.stderr
     assert (ROOT / "manage.py").exists()
-
-
-def test_ci_failure_probe():
-    raise AssertionError("temporary CI failure probe")
