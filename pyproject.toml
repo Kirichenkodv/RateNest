@@ -46,11 +46,10 @@ python_version = "3.13"
 strict = true # строгий режим проверок mypy
 plugins = ["mypy_django_plugin.main", "pydantic.mypy"]
 mypy_path = "."
-explicit_package_bases = true   # помогают mypy находить модули внутри проекта
+explicit_package_bases = true # помогают mypy находить модули внутри проекта
 
 [tool.django-stubs]
 django_settings_module = "config.settings"
-
 
 [[tool.mypy.overrides]]
 module = ["django.core.exceptions", "django.core.exceptions.*"]
